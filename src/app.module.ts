@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from './modules/app/app.controller';
+import { AppService } from './modules/app/app.service';
 
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
-import databaseConfig from './configs/database';
+import databaseConfig from './config/database';
+
+import { UserModule } from './modules/user/user.module';
 
 @Module({
     imports: [
@@ -30,6 +32,8 @@ import databaseConfig from './configs/database';
         }),
 
         TypeOrmModule.forRoot(databaseConfig),
+
+        UserModule,
     ],
     controllers: [AppController],
     providers: [AppService],
