@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from '@/app.module';
 
 import { SwaggerModule } from '@nestjs/swagger';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { ResponseInterceptor } from './interceptor/response.interceptor';
+
 import swaggerOptions from './config/swagger';
 
 async function bootstrap() {
@@ -13,6 +15,7 @@ async function bootstrap() {
     const nestWinston = app.get(WINSTON_MODULE_NEST_PROVIDER);
     app.useLogger(nestWinston);
     app.useGlobalFilters(new HttpExceptionFilter());
+    app.useGlobalInterceptors(new ResponseInterceptor());
 
     const document = SwaggerModule.createDocument(app, swaggerOptions);
     SwaggerModule.setup('api', app, document);

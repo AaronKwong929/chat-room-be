@@ -1,3 +1,4 @@
+import { errorResponse } from '@/types';
 import {
     ArgumentsHost,
     Catch,
@@ -15,13 +16,20 @@ export class HttpExceptionFilter implements ExceptionFilter {
             request = ctx.getRequest<Request>(),
             status = exception.getStatus();
 
-        response.status(status).json({
-            path: request.url,
-            query: request.query,
-            body: request.body,
+        const result: errorResponse = {
             time: dayjs().format(`YYYY-MM-DD HH:mm:ss`),
-            status: status,
-            errorMsg: exception.getResponse(),
-        });
+            code: -1,
+            message: `请求失败`,
+            statusCode: status,
+            details: {
+                ...(exception.getResponse() as Record<string, any>),
+                path: request.path,
+                query: request.query,
+                params: request.params,
+                body: request.body,
+            },
+        };
+
+        response.status(status).json(result);
     }
 }
