@@ -4,5 +4,6 @@
     "tabWidth": 4,
     "trailingComma": "es5",
     "jsxSingleQuote": true,
-    "jsxBracketSameLine": false
+    "jsxBracketSameLine": false,
+    "endOfLine": "lf"
 }
