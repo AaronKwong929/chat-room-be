@@ -1,6 +1,6 @@
-import { format, LoggerOptions, transports } from 'winston';
+import { LoggerOptions, format, transports } from 'winston';
 
-const config: LoggerOptions = {
+const configs: LoggerOptions = {
     level: `warn`,
     exitOnError: false,
     format: format.combine(
@@ -11,8 +11,11 @@ const config: LoggerOptions = {
         )
     ),
     transports: [
-        new transports.File({ filename: 'ErrorLogs.log', level: `error` }),
+        new transports.File({
+            filename: `ErrorLogs.log`,
+            handleExceptions: true,
+        }),
     ],
 };
 
-export default config;
+export default configs;
