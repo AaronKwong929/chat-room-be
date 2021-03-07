@@ -32,3 +32,34 @@ flush privileges;
 quit;
 mysql -u root -p
 ```
+
+4. TypeORM 设置类型为 timeStamp 时设置初始值
+
+```typescript
+Entity();
+export abstract class Basic {
+    // ...
+
+    @Column({
+        comment: `最近更新时间`,
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+    })
+    updatedAt: Date;
+
+    @Column({
+        comment: `创建时间`,
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP',
+    })
+    createdAt: Date;
+
+    // ...
+}
+```
+
+5. 关于 TypeORM 使用事务无法触发的问题
+
+不能直接 this.entity.save(dto)，这样不能触发 BeforeInsert 事务
+
+需要 this.entity.create({})，再 this.entity.save()

@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { UserDTO } from './user.DTO';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 @Controller('user')
@@ -20,5 +21,11 @@ export class UserController {
     @Get(`error2`)
     getError2() {
         return this.userService.getError2();
+    }
+
+    @Post(`create`)
+    @ApiOperation({ summary: `创建用户` })
+    createUser(@Body() userDTO: UserDTO) {
+        return this.userService.createUser(userDTO);
     }
 }
